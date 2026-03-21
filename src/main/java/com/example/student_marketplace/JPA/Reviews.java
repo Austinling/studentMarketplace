@@ -3,22 +3,21 @@ package com.example.student_marketplace.JPA;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Instant;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "categories")
-public class Categories {
+@Table(name = "reviews")
+public class Reviews {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long groupID;
-    @NonNull private String name;
-    @NonNull private String slug;
-    @NonNull private Instant createdAt;
+    @NonNull private Integer sellerID;
+    @NonNull private Integer buyerID;
+
+    private String body;
+    @NonNull private Double rating;
 }

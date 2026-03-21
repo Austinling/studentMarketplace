@@ -11,19 +11,18 @@ import java.time.Instant;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "students")
-public class Students {
+@Table(name = "transactions")
+public class Transactions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long studentID;
+    @NonNull private Long buyerID;
+    @NonNull private Long sellerID;
+    @NonNull private Long productID;
 
-    @NonNull private String firstName;
-    @NonNull private String lastName;
-
-    private Long numOfListings;
-    private double rating;
-    private Instant joinedAt;
+    private Integer amount;
+    private String status;
+    @NonNull private Instant createdAt;
 
 }

@@ -11,14 +11,23 @@ import java.time.Instant;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "categories")
-public class Categories {
+@Table(name = "products")
+public class Products {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long groupID;
+    @NonNull private Long studentID;
+    @NonNull private Long categoryID;
     @NonNull private String name;
     @NonNull private String slug;
+    private String description;
+    @NonNull private Integer price;
+    @NonNull private Integer sku;
+    @NonNull private Integer status;
+    private Integer stockQuantity;
     @NonNull private Instant createdAt;
+    private Instant updatedAt;
+
 }

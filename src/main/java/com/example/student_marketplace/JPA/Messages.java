@@ -9,21 +9,16 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-@Table(name = "students")
-public class Students {
+@Table(name = "messages")
+public class Messages {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long studentID;
+    @NonNull private Long senderID;
+    @NonNull private Long recipientID;
 
-    @NonNull private String firstName;
-    @NonNull private String lastName;
-
-    private Long numOfListings;
-    private double rating;
-    private Instant joinedAt;
-
+    private String body;
+    @NonNull private Instant createdAt;
 }
