@@ -23,6 +23,6 @@ public class Categories {
     @NonNull private String slug;
     @NonNull private Instant createdAt;
 
-    @OneToMany(mappedBy = "Category")
-    private List<Listings> listings;
+    @OneToMany(mappedBy = "category")
+    private List<Listings> categoryListings;
 }

@@ -26,8 +26,8 @@ public class LoginSystem {
     @NonNull private Instant joined_at;
     private Instant updated_at;
 
-    @OneToOne(mappedBy = "profileID", cascade = CascadeType.ALL)
-    private Profiles profileID;
+    @OneToOne(mappedBy = "profileID", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Profiles profile;
 
     @OneToMany(mappedBy = "senderID")
     private List<Messages> senderMessages;

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,8 +19,6 @@ public class Listings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull private Long sellerID;
-    @NonNull private Long categoryID;
     @NonNull private String name;
     @NonNull private String slug;
     private String description;
@@ -33,5 +32,15 @@ public class Listings {
     @ManyToOne
     @JoinColumn(name = "categoryID")
     private Categories category;
+
+    @ManyToOne
+    @JoinColumn(name = "sellerID")
+    private Profiles seller;
+
+    @OneToMany(mappedBy = "productImage")
+    private List<ProductImages> productImages;
+
+    @OneToOne(mappedBy = "transactionProduct")
+    private Transactions transactionProduct;
 
 }

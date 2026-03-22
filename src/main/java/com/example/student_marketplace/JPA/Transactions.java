@@ -17,12 +17,20 @@ public class Transactions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull private Long buyerID;
-    @NonNull private Long sellerID;
-    @NonNull private Long productID;
-
     private Integer amount;
     private String status;
     @NonNull private Instant createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "buyerID")
+    private Profiles transactionBuyer;
+
+    @ManyToOne
+    @JoinColumn(name = "sellerID")
+    private Profiles transactionSeller;
+
+    @OneToOne
+    @JoinColumn(name = "productID")
+    private Listings transactionProduct;
 
 }

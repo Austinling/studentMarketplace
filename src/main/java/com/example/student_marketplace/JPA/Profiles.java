@@ -27,18 +27,21 @@ public class Profiles{
 
     @OneToOne
     @JoinColumn(name = "profileID", nullable = false)
-    private LoginSystem profileID;
+    private LoginSystem profile;
 
-    @OneToMany(mappedBy = "sellerID")
+    @OneToMany(mappedBy = "reviewSellerID")
     private List<Reviews> sellerReviews;
-    @OneToMany(mappedBy = "buyerID")
+    @OneToMany(mappedBy = "reviewBuyerID")
     private List<Reviews> buyerReviews;
 
-    @OneToMany(mappedBy = "buyerID")
+    @OneToMany(mappedBy = "transactionBuyerID")
     private List<Transactions> buyerTransactions;
 
-    @OneToMany(mappedBy = "sellerID")
+    @OneToMany(mappedBy = "transactionSellerID")
     private List<Transactions> sellerTransactions;
+
+    @OneToMany(mappedBy = "listingSellerID", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Listings> sellerListings;
 
 
 

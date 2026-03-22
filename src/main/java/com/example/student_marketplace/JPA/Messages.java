@@ -21,9 +21,9 @@ public class Messages {
 
     @ManyToOne
     @JoinColumn(name = "senderID", nullable = false)
-    private LoginSystem senderID;
+    private LoginSystem sender;
 
     @ManyToOne
     @JoinColumn(name = "recipientID", nullable = false)
-    private LoginSystem recipientID;
+    private LoginSystem recipient;
 }

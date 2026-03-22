@@ -15,9 +15,14 @@ public class Reviews {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull private Integer sellerID;
-    @NonNull private Integer buyerID;
-
     private String body;
     @NonNull private Double rating;
+
+    @ManyToOne
+    @JoinColumn(name = "buyerID")
+    private Profiles reviewBuyer;
+
+    @ManyToOne
+    @JoinColumn(name = "sellerID")
+    private Profiles reviewSeller;
 }
