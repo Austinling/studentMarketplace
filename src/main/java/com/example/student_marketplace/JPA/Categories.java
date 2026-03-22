@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,4 +22,7 @@ public class Categories {
     @NonNull private String name;
     @NonNull private String slug;
     @NonNull private Instant createdAt;
+
+    @OneToMany(mappedBy = "Category")
+    private List<Listings> listings;
 }

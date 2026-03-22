@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.List;
 
 
 @Getter
@@ -24,4 +25,13 @@ public class LoginSystem {
     @NonNull private String password_hash;
     @NonNull private Instant joined_at;
     private Instant updated_at;
+
+    @OneToOne(mappedBy = "profileID", cascade = CascadeType.ALL)
+    private Profiles profileID;
+
+    @OneToMany(mappedBy = "senderID")
+    private List<Messages> senderMessages;
+
+    @OneToMany(mappedBy = "recipientID")
+    private List<Messages> recipientMessages;
 }

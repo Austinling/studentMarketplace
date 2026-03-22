@@ -16,9 +16,14 @@ public class Messages {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull private Long senderID;
-    @NonNull private Long recipientID;
-
     private String body;
     @NonNull private Instant createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "senderID", nullable = false)
+    private LoginSystem senderID;
+
+    @ManyToOne
+    @JoinColumn(name = "recipientID", nullable = false)
+    private LoginSystem recipientID;
 }
