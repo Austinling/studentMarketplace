@@ -1,4 +1,4 @@
-package com.example.student_marketplace.JPA;
+package com.example.student_marketplace.Entities;
 
 import jakarta.persistence.*;
 import lombok.*;
