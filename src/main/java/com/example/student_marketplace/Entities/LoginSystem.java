@@ -26,12 +26,12 @@ public class LoginSystem {
     @NonNull private Instant joined_at;
     private Instant updated_at;
 
-    @OneToOne(mappedBy = "profileID", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private Profiles profile;
 
-    @OneToMany(mappedBy = "senderID")
+    @OneToMany(mappedBy = "sender")
     private List<Messages> senderMessages;
 
-    @OneToMany(mappedBy = "recipientID")
+    @OneToMany(mappedBy = "recipient")
     private List<Messages> recipientMessages;
 }

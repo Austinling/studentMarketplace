@@ -35,7 +35,7 @@ public class Listings {
 
     @ManyToOne
     @JoinColumn(name = "sellerID")
-    private Profiles seller;
+    private Profiles listingSeller;
 
     @OneToMany(mappedBy = "productImage")
     private List<ProductImages> productImages;
