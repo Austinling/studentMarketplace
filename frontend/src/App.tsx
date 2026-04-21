@@ -1,13 +1,22 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
+    const baseURL = import.meta.env.VITE_API_URL;
+    const [data,setData] = useState({});
 
-  return <></>;
+    useEffect(()=>{
+      const fetchData = async() => {
+        try{
+          const response = await axios.get(baseURL);
+          setData(response.data);
+        }
+
+      }
+
+    })
 }
 
 export default App;
