@@ -14,10 +14,14 @@ public class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http){
-        http.authorizeHttpRequests((requests) ->
+        http
+                .cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests((requests) ->
                 requests.requestMatchers("/h2-console").permitAll()
+                        .requestMatchers("/").permitAll()
                         .anyRequest().authenticated()
-        ).csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
+        )
                 .httpBasic(Customizer.withDefaults())
                 .headers(headers -> headers.frameOptions(frame-> frame.sameOrigin()))
                 .formLogin(Customizer.withDefaults())
