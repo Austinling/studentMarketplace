@@ -19,7 +19,7 @@ public class WebSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) ->
                 requests.requestMatchers("/h2-console").permitAll()
-                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/loginSystem").permitAll()
                         .anyRequest().authenticated()
         )
                 .httpBasic(Customizer.withDefaults())
