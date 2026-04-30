@@ -1,5 +1,7 @@
 package com.example.student_marketplace.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,10 +22,12 @@ public class Messages {
     @NonNull private Instant createdAt;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "senderID", nullable = false)
     private LoginSystem sender;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "recipientID", nullable = false)
     private LoginSystem recipient;
 }

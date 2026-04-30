@@ -18,7 +18,7 @@ public class WebSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) ->
-                requests.requestMatchers("/h2-console").permitAll()
+                requests.requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/loginSystem").permitAll()
                         .anyRequest().authenticated()
         )

@@ -2,6 +2,9 @@ package com.example.student_marketplace.Entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.Instant;
 import java.util.List;
@@ -23,8 +26,14 @@ public class LoginSystem {
     @NonNull String email;
     @NonNull private String role;
     @NonNull private String password_hash;
-    @NonNull private Instant joined_at;
-    private Instant updated_at;
+
+    @CreationTimestamp
+    @Column(updatable = false,  nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Instant joinedAt;
+
+    @UpdateTimestamp
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Instant updatedAt;
 
     @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private Profiles profile;

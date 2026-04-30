@@ -1,5 +1,7 @@
 package com.example.student_marketplace.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +28,7 @@ public class Profiles{
     @NonNull private Instant updatedAt;
 
     @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "profileID", nullable = false)
     private LoginSystem profile;
 
