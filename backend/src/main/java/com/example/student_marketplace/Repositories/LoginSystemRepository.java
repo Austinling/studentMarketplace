@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface LoginSystemRepository extends JpaRepository<LoginSystem, Long> {
-    Optional<LoginSystem> findById(long id);
     Optional<LoginSystem> findByEmail(String email);
     Optional<LoginSystem> findByUsername(String username);
     List<LoginSystem> findByRole(String role);

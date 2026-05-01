@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Messages, Long>{
-    Optional<LoginSystem> findById(long id);
+    List<Messages> findBySenderId(Long senderId);
 }
