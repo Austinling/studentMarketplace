@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function Login() {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex w-screen h-screen items-center justify-center">
       <div className="flex flex-col items-center justify-center w-96 h-120 shadow-2xl rounded-4xl gap-10">
         <div>
           <h3 className="text-4xl font-roboto">Welcome Back!</h3>
