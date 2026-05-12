@@ -11,7 +11,7 @@ export function MainSearch() {
           className="font-roboto text-6xl text-white text-center"
           htmlFor="searchBar"
         >
-          What are you looking for?
+          What are you searching for?
         </label>
         <input
           id="searchBar"
