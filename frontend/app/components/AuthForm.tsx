@@ -1,13 +1,45 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { FormEvent, useState } from "react";
 
 interface AuthProps {
   type: "Login" | "Register";
 }
 
 export function AuthForm({ type }: AuthProps) {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const login = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:8082/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const data = response.json();
+
+        redirect("/home");
+      } else {
+        console.log("Failure to log in");
+      }
+    } catch (error) {
+      console.error("Error is ", error);
+    }
+  };
+
   return (
-    <div className="flex w-screen h-screen items-center justify-center">
+    <form
+      onSubmit={login}
+      className="flex w-screen h-screen items-center justify-center"
+    >
       <div className="flex flex-col items-center justify-center h-auto w-auto p-10 shadow-2xl rounded-4xl gap-10 transition-all duration-500 ease-in-out">
         <div>
           <h3 className="text-4xl font-roboto">
@@ -80,6 +112,6 @@ export function AuthForm({ type }: AuthProps) {
           </p>
         </div>
       </div>
-    </div>
+    </form>
   );
 }

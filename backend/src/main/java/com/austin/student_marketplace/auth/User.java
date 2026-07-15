@@ -34,7 +34,7 @@ public class User {
     private String role;
 
     @Column(name = "password", nullable = false)
-    @NonNull private String password;
+    @NonNull private String password_hash;
 
     @Column(name = "joinedAt", updatable = false, nullable = false)
     private Instant joinedAt;

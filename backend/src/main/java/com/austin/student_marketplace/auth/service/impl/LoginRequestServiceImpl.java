@@ -3,6 +3,7 @@ package com.austin.student_marketplace.auth.service.impl;
 import com.austin.student_marketplace.Exceptions.EmailNotFoundException;
 import com.austin.student_marketplace.Exceptions.IDNotFoundException;
 import com.austin.student_marketplace.Exceptions.PasswordException;
+import com.austin.student_marketplace.auth.LoginRequest;
 import com.austin.student_marketplace.auth.User;
 import com.austin.student_marketplace.auth.authRepository;
 import com.austin.student_marketplace.auth.dto.AuthResponseDto;
@@ -24,18 +25,10 @@ public class LoginRequestServiceImpl implements LoginRequestService {
     }
 
     @Override
-    public AuthResponseDto login(LoginRequestDto loginRequestDto) {
-        User user = authRepository.findByEmail(loginRequestDto.email())
+    public User login(LoginRequest loginRequest) {
+        User user = authRepository.findByEmail(loginRequest.email())
                 .orElseThrow(()-> new EmailNotFoundException("Email does not exist!"));
 
-        if (!user.getPassword().equals(loginRequestDto.password())) {
-            throw new PasswordException("Password is wrong!");
-        }
-
-        return new AuthResponseDto(
-                "tempFakeJwtToken",
-                1000000,
-                user
-        );
+        return user;
     }
 }
