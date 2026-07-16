@@ -12,8 +12,8 @@ public class LoginRequestMapperImpl implements LoginRequestMapper {
     @Override
     public UserDto toDto(User user) {
         return new UserDto(
-                user.getProfile().getFirstName(),
-                user.getProfile().getLastName(),
+                "user.getProfile().getFirstName()",
+                "user.getProfile().getLastName()",
                 user.getRole(),
                 user.getUsername()
         );

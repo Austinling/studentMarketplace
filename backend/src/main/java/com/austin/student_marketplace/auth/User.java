@@ -1,18 +1,18 @@
 package com.austin.student_marketplace.auth;
 
-import com.austin.student_marketplace.Entities.Messages;
-import com.austin.student_marketplace.Entities.Profiles;
+/*
+import com.austin.student_marketplace.Entities.Messagesz
+
+ */
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
-
 import java.time.Instant;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "loginSystem")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -34,7 +34,7 @@ public class User {
     private String role;
 
     @Column(name = "password", nullable = false)
-    @NonNull private String password_hash;
+    @NonNull private String password;
 
     @Column(name = "joinedAt", updatable = false, nullable = false)
     private Instant joinedAt;
@@ -42,14 +42,20 @@ public class User {
     @Column(name = "updatedAt", nullable = false)
     private Instant updatedAt;
 
+
+
     @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private Profiles profile;
+
+    /*
 
     @OneToMany(mappedBy = "sender")
     private List<Messages> senderMessages;
 
     @OneToMany(mappedBy = "recipient")
     private List<Messages> recipientMessages;
+
+     */
 
     @Override
     public boolean equals(Object o) {
@@ -60,7 +66,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, email, role, password_hash, joinedAt, updatedAt, profile, senderMessages, recipientMessages);
+        return Objects.hash(id, username, email, role, password, joinedAt, updatedAt);
     }
 
     @Override
@@ -70,12 +76,9 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
-                ", password_hash='" + password_hash + '\'' +
+                ", password_hash='" + password + '\'' +
                 ", joinedAt=" + joinedAt +
                 ", updatedAt=" + updatedAt +
-                ", profile=" + profile +
-                ", senderMessages=" + senderMessages +
-                ", recipientMessages=" + recipientMessages +
                 '}';
     }
 }

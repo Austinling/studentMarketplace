@@ -12,6 +12,8 @@ public class StudentMarketplaceApplication {
                         .ignoreIfMalformed().ignoreIfMissing().load();
 
         dotenv.get("DATABASE_URL");
+
+        dotenv.entries().forEach((entry)-> System.setProperty(entry.getKey(), entry.getValue()));
         SpringApplication.run(StudentMarketplaceApplication.class, args);
     }
 
