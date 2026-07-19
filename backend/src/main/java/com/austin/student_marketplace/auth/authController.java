@@ -4,6 +4,7 @@ import com.austin.student_marketplace.auth.dto.LoginRequestDto;
 import com.austin.student_marketplace.auth.dto.UserDto;
 import com.austin.student_marketplace.auth.mapper.impl.LoginRequestMapperImpl;
 import com.austin.student_marketplace.auth.service.LoginRequestService;
+import com.austin.student_marketplace.auth.service.impl.LoginRequestServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +14,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class authController {
-    private final LoginRequestService loginRequestService;
+    private final LoginRequestServiceImpl loginRequestServiceImpl;
     private final LoginRequestMapperImpl loginRequestMapperImpl;
 
-    public authController(LoginRequestService loginRequestService, LoginRequestMapperImpl loginRequestMapperImpl) {
-        this.loginRequestService = loginRequestService;
+    public authController(LoginRequestServiceImpl loginRequestServiceImpl, LoginRequestMapperImpl loginRequestMapperImpl) {
+        this.loginRequestServiceImpl = loginRequestServiceImpl;
         this.loginRequestMapperImpl = loginRequestMapperImpl;
     }
 
@@ -28,7 +30,7 @@ public class authController {
             @RequestBody LoginRequestDto loginRequestDto
     ) {
         LoginRequest loginRequest = loginRequestMapperImpl.fromDto(loginRequestDto);
-        User user = loginRequestService.login(loginRequest);
+        User user = loginRequestServiceImpl.login(loginRequest);
         UserDto userDto = loginRequestMapperImpl.toDto(user);
 
         return new ResponseEntity<>(userDto, HttpStatus.OK);

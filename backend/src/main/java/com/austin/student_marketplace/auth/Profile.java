@@ -1,13 +1,10 @@
 package com.austin.student_marketplace.auth;
 
-import com.austin.student_marketplace.auth.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -17,7 +14,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "profiles")
-public class Profiles{
+public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @UuidGenerator(style = UuidGenerator.Style.TIME)
@@ -30,11 +27,6 @@ public class Profiles{
     @NonNull private Double rating;
     @NonNull private Instant joinedAt;
     @NonNull private Instant updatedAt;
-
-    @OneToOne
-    @JsonIgnore
-    @JoinColumn(name = "profileID", nullable = false)
-    private User profile;
 
     /*
 

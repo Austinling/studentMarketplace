@@ -9,11 +9,13 @@ interface AuthProps {
 }
 
 export function AuthForm({ type }: AuthProps) {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState<string>();
+  const [password, setPassword] = useState<string>();
 
   const login = async (e: FormEvent) => {
     e.preventDefault();
+
+    let success = false;
     try {
       const response = await fetch("http://localhost:8082/api/auth/login", {
         method: "POST",
@@ -24,14 +26,18 @@ export function AuthForm({ type }: AuthProps) {
       });
 
       if (response.ok) {
-        const data = response.json();
+        const data = await response.json();
 
-        redirect("/home");
+        success = true;
       } else {
         console.log("Failure to log in");
       }
     } catch (error) {
       console.error("Error is ", error);
+    }
+
+    if (success) {
+      redirect("/homepage");
     }
   };
 
@@ -52,7 +58,9 @@ export function AuthForm({ type }: AuthProps) {
             type="text"
             placeholder="Email Address"
             name="username"
+            value={email}
             required
+            onChange={(e) => setEmail(e.target.value)}
           ></input>
 
           <div className="flex flex-col gap-3">
@@ -61,6 +69,8 @@ export function AuthForm({ type }: AuthProps) {
               type="password"
               placeholder="Password"
               name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             ></input>
             {type == "Login" && (

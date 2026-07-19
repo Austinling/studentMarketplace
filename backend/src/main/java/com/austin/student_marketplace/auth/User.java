@@ -34,7 +34,7 @@ public class User {
     private String role;
 
     @Column(name = "password", nullable = false)
-    @NonNull private String password;
+    private String password;
 
     @Column(name = "joinedAt", updatable = false, nullable = false)
     private Instant joinedAt;
@@ -42,11 +42,9 @@ public class User {
     @Column(name = "updatedAt", nullable = false)
     private Instant updatedAt;
 
-
-
-    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Profiles profile;
-
+    @OneToOne
+    @JoinColumn(name = "profileId",nullable = false)
+    private Profile profile;
     /*
 
     @OneToMany(mappedBy = "sender")
