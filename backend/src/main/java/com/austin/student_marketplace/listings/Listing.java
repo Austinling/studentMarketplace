@@ -33,13 +33,14 @@ public class Listing {
     private String description;
 
     @Column(name = "price", nullable = false)
-    private Integer price;
+    private Double price;
 
     @Column(name = "sku", nullable = false, updatable = false)
-    Integer sku;
+    private String sku;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private Integer status;
+    private ListingStatus status;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
