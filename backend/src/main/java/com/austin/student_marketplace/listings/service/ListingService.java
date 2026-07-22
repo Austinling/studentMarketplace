@@ -7,7 +7,7 @@ import com.austin.student_marketplace.listings.UpdateListing;
 import java.util.List;
 import java.util.UUID;
 
-public interface listingService {
+public interface ListingService {
     Listing createListing(CreateListing createListing);
 
     Listing updateListing(UUID listingId, UpdateListing updateListing);

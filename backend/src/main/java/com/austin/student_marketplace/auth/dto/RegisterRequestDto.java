@@ -2,7 +2,9 @@ package com.austin.student_marketplace.auth.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
+import lombok.Builder;
 
+@Builder
 public record RegisterRequestDto(
         @NotBlank(message = "{auth.firstname.notblank}")
         @Length(max = 255, message = "{auth.length.max}")
