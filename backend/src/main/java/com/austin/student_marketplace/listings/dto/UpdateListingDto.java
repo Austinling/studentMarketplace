@@ -1,9 +1,12 @@
 package com.austin.student_marketplace.listings.dto;
 
+import com.austin.student_marketplace.listings.Category;
 import com.austin.student_marketplace.listings.ListingStatus;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 import lombok.Builder;
+
+import java.util.Set;
 
 @Builder
 public record UpdateListingDto(
@@ -20,7 +23,9 @@ public record UpdateListingDto(
     Double price,
     @NotBlank(message = "{listing.status.notblank}")
     @Length(max = 255, message = "{listing.length.max}")
-    ListingStatus status
+    ListingStatus status,
+    Set<Category> categories
+
 
 ) {
 

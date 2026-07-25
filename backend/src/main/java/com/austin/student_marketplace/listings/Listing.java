@@ -1,5 +1,6 @@
 package com.austin.student_marketplace.listings;
 
+import com.austin.student_marketplace.audit.TimestampDetails;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "listings")
-public class Listing {
+public class Listing extends TimestampDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,13 +44,6 @@ public class Listing {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(name = "createdAt", nullable = false, updatable = false)
-    private Instant createdAt;
-
-    @Column(name = "updatedAt", nullable = false)
-    private Instant updatedAt;
-
-
 
     @ManyToMany
     @JoinTable(
@@ -69,8 +63,6 @@ public class Listing {
                 ", price=" + price +
                 ", status=" + status +
                 ", quantity=" + quantity +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
                 ", categories=" + categories +
                 '}';
     }
@@ -84,7 +76,7 @@ public class Listing {
 
     @Override
     public int hashCode() {
-        return Objects.hash(listingId, name, slug, description, price, status, quantity, createdAt, updatedAt, categories);
+        return Objects.hash(listingId, name, slug, description, price, status, quantity, categories);
     }
 
 

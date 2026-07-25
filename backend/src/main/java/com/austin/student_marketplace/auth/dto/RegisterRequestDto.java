@@ -12,6 +12,9 @@ public record RegisterRequestDto(
         @NotBlank(message = "{auth.lastname.notblank}")
         @Length(max = 255, message = "{auth.length.max}")
         String lastName,
+        @NotBlank(message = "{auth.username.notblank}")
+        @Length(max = 255, message = "{auth.length.max}")
+        String username,
         @NotBlank(message = "{auth.email.notblank}")
         @Length(max = 255, message = "{auth.length.max}")
         String email,

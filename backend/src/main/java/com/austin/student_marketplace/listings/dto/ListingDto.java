@@ -1,9 +1,12 @@
 package com.austin.student_marketplace.listings.dto;
 
+import com.austin.student_marketplace.listings.Category;
 import com.austin.student_marketplace.listings.ListingStatus;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 import lombok.Builder;
+
+import java.util.Set;
 
 @Builder
 public record ListingDto(
@@ -11,6 +14,7 @@ public record ListingDto(
         String description,
         Integer quantity,
         Double price,
-        ListingStatus status
+        ListingStatus status,
+        Set<Category> categories
 ) {
 }

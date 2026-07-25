@@ -4,6 +4,7 @@ package com.austin.student_marketplace.auth;
 import com.austin.student_marketplace.Entities.Messagesz
 
  */
+import com.austin.student_marketplace.audit.TimestampDetails;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends TimestampDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @UuidGenerator(style = UuidGenerator.Style.TIME)
@@ -36,12 +37,6 @@ public class User {
 
     @Column(name = "password", nullable = false)
     private String password;
-
-    @Column(name = "joinedAt", updatable = false, nullable = false)
-    private Instant joinedAt;
-
-    @Column(name = "updatedAt", nullable = false)
-    private Instant updatedAt;
 
     @OneToOne
     @JoinColumn(name = "profileId",nullable = false)
@@ -65,7 +60,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, email, role, password, joinedAt, updatedAt);
+        return Objects.hash(id, username, email, role, password);
     }
 
     @Override
@@ -76,8 +71,6 @@ public class User {
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
                 ", password_hash='" + password + '\'' +
-                ", joinedAt=" + joinedAt +
-                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

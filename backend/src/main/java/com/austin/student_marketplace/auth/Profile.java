@@ -1,5 +1,6 @@
 package com.austin.student_marketplace.auth;
 
+import com.austin.student_marketplace.audit.TimestampDetails;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
@@ -14,19 +15,24 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "profiles")
-public class Profile {
+public class Profile extends TimestampDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @NonNull private String firstName;
-    @NonNull private String lastName;
-    @NonNull private Long numOfListings;
-    @NonNull private Double rating;
-    @NonNull private Instant joinedAt;
-    @NonNull private Instant updatedAt;
+    @Column(name = "firstName", nullable = false)
+    private String firstName;
+
+    @Column(name = "lastName", nullable = false)
+    private String lastName;
+
+    @Column(name = "numOfListings", nullable = false)
+    private Long numOfListings;
+
+    @Column(name = "rating", nullable = false)
+    private Double rating;
 
     /*
 

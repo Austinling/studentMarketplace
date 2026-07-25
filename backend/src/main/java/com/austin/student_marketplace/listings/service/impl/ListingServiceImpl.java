@@ -1,5 +1,6 @@
 package com.austin.student_marketplace.listings.service.impl;
 
+import com.austin.student_marketplace.Exceptions.ListingException;
 import com.austin.student_marketplace.listings.*;
 import com.austin.student_marketplace.listings.service.ListingService;
 import org.springframework.data.domain.Sort;
@@ -26,9 +27,7 @@ public class ListingServiceImpl implements ListingService {
                 .slug(createSlug(createListing.name()))
                 .description(createListing.description())
                 .price(createListing.price())
-                .createdAt(now)
-                .updatedAt(now)
-                .categories(null)
+                .categories(createListing.categories())
                 .build();
 
         return listingRepository.save(listing);
@@ -36,17 +35,23 @@ public class ListingServiceImpl implements ListingService {
 
     @Override
     public Listing updateListing(UUID listingId, UpdateListing updateListing) {
-        return null;
+        Listing listing = listingRepository.findById(listingId).orElseThrow(()-> new ListingException("listing not found"));
+        listing.setName(updateListing.name());
+        listing.setDescription(updateListing.description());
+        listing.setPrice(updateListing.price());
+        listing.setCategories(updateListing.categories());
+
+        return listingRepository.save(listing);
     }
 
     @Override
     public List<Listing> listListings() {
-        return listingRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+        return listingRepository.findAll(Sort.by(Sort.Direction.DESC, "updatedAt"));
     }
 
     @Override
     public void deleteListing(UUID listingId) {
-
+        listingRepository.deleteById(listingId);
     }
 
     private static String createSlug(String name){
