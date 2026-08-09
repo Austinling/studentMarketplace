@@ -6,12 +6,6 @@ import lombok.Builder;
 
 @Builder
 public record RegisterRequestDto(
-        @NotBlank(message = "{auth.firstname.notblank}")
-        @Length(max = 255, message = "{auth.length.max}")
-        String firstName,
-        @NotBlank(message = "{auth.lastname.notblank}")
-        @Length(max = 255, message = "{auth.length.max}")
-        String lastName,
         @NotBlank(message = "{auth.username.notblank}")
         @Length(max = 255, message = "{auth.length.max}")
         String username,

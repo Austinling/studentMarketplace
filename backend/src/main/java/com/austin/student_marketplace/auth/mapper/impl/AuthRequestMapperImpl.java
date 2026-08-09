@@ -1,6 +1,6 @@
 package com.austin.student_marketplace.auth.mapper.impl;
 
-import com.austin.student_marketplace.auth.LoginRequest;
+import com.austin.student_marketplace.auth.LoginResponse;
 import com.austin.student_marketplace.auth.RegisterRequest;
 import com.austin.student_marketplace.auth.User;
 import com.austin.student_marketplace.auth.dto.LoginRequestDto;
@@ -22,18 +22,8 @@ public class AuthRequestMapperImpl implements AuthRequestMapper {
     }
 
     @Override
-    public LoginRequest fromDto(LoginRequestDto loginRequestDto) {
-        return LoginRequest.builder()
-                .email(loginRequestDto.email())
-                .password(loginRequestDto.password())
-                .build();
-    }
-
-    @Override
     public RegisterRequest fromDto(RegisterRequestDto registerRequestDto) {
         return RegisterRequest.builder()
-                .firstName(registerRequestDto.firstName())
-                .lastName(registerRequestDto.lastName())
                 .username(registerRequestDto.username())
                 .email(registerRequestDto.email())
                 .password(registerRequestDto.password())

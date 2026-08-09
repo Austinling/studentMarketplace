@@ -4,10 +4,12 @@ package com.austin.student_marketplace.auth;
 import com.austin.student_marketplace.Entities.Messagesz
 
  */
+
 import com.austin.student_marketplace.audit.TimestampDetails;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
+
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
@@ -26,10 +28,10 @@ public class User extends TimestampDetails {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column( name = "username", nullable = false)
+    @Column( name = "username", unique = true, nullable = false)
     private String username;
 
-    @Column( name = "email", nullable = false)
+    @Column( name = "email", unique = true, nullable = false)
     private String email;
 
     @Column (name = "role", nullable = false)
@@ -37,6 +39,15 @@ public class User extends TimestampDetails {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "enabled")
+    private boolean enabled;
+
+    @Column(name = "verification_code")
+    private String verificationCode;
+
+    @Column(name = "verification_expiration")
+    private Instant verificationExpiration;
 
     @OneToOne
     @JoinColumn(name = "profileId",nullable = false)

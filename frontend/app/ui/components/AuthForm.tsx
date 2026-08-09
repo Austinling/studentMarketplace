@@ -9,21 +9,38 @@ interface AuthProps {
 }
 
 export function AuthForm({ type }: AuthProps) {
+  const [username, setUsername] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
 
-  const login = async (e: FormEvent) => {
+  const handleAuth = async (e: FormEvent, authType: string) => {
     e.preventDefault();
+
+    const authVariable = authType.toLowerCase();
+    const body =
+      authType === "register"
+        ? {
+            username: username,
+            email: email,
+            password: password,
+          }
+        : {
+            email: email,
+            password: password,
+          };
 
     let success = false;
     try {
-      const response = await fetch("http://localhost:8082/api/auth/login", {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `http://localhost:8082/api/auth/${authType}`,
+        {
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -43,7 +60,7 @@ export function AuthForm({ type }: AuthProps) {
 
   return (
     <form
-      onSubmit={login}
+      onSubmit={(e) => handleAuth(e, type)}
       className="flex w-screen h-screen items-center justify-center"
     >
       <div className="flex flex-col items-center justify-center h-auto w-auto p-10 shadow-2xl rounded-4xl gap-10 transition-all duration-500 ease-in-out">
@@ -53,6 +70,17 @@ export function AuthForm({ type }: AuthProps) {
           </h3>
         </div>
         <div className="flex flex-col gap-6">
+          {type == "Register" && (
+            <input
+              className="p-3 border-gray-200 border-2 w-80"
+              type="username"
+              placeholder="Enter Your Username"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            ></input>
+          )}
           <input
             className="p-3 border-gray-200 border-2 w-80"
             type="text"

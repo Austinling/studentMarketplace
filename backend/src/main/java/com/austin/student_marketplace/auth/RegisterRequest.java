@@ -6,9 +6,7 @@ import lombok.Builder;
 public record RegisterRequest(
         String email,
         String password,
-        String username,
-        String firstName,
-        String lastName
+        String username
 
 ) {
 }
