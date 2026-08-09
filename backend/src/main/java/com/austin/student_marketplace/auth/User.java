@@ -49,7 +49,7 @@ public class User extends TimestampDetails {
     @Column(name = "verification_expiration")
     private Instant verificationExpiration;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profileId",nullable = false)
     private Profile profile;
     /*

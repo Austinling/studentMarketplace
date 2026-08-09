@@ -9,16 +9,16 @@ interface AuthProps {
 }
 
 export function AuthForm({ type }: AuthProps) {
-  const [username, setUsername] = useState<string>();
-  const [email, setEmail] = useState<string>();
-  const [password, setPassword] = useState<string>();
+  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const handleAuth = async (e: FormEvent, authType: string) => {
     e.preventDefault();
 
     const authVariable = authType.toLowerCase();
     const body =
-      authType === "register"
+      authVariable === "register"
         ? {
             username: username,
             email: email,
@@ -32,7 +32,7 @@ export function AuthForm({ type }: AuthProps) {
     let success = false;
     try {
       const response = await fetch(
-        `http://localhost:8082/api/auth/${authType}`,
+        `http://localhost:8082/api/auth/${authVariable}`,
         {
           method: "POST",
           body: JSON.stringify(body),

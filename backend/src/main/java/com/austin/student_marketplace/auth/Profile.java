@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -22,10 +21,10 @@ public class Profile extends TimestampDetails {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "firstName", nullable = false)
+    @Column(name = "firstName")
     private String firstName;
 
-    @Column(name = "lastName", nullable = false)
+    @Column(name = "lastName")
     private String lastName;
 
     @Column(name = "numOfListings", nullable = false)
@@ -33,6 +32,9 @@ public class Profile extends TimestampDetails {
 
     @Column(name = "rating", nullable = false)
     private Double rating;
+
+    @OneToOne(mappedBy = "profile")
+    private User user;
 
     /*
 
