@@ -1,5 +1,0 @@
-import { AuthForm } from "../ui/components/AuthForm";
-
-export default function Register() {
-  return <AuthForm type="Register" />;
-}

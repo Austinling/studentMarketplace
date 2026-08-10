@@ -1,5 +1,12 @@
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogPortal,
+} from "@/components/ui/dialog";
 import Image from "next/image";
 import Link from "next/link";
+import { AuthForm } from "./AuthForm";
 
 export function TopNavBar() {
   return (
@@ -27,12 +34,33 @@ export function TopNavBar() {
         </div>
 
         <div className="flex gap-6">
-          <button className="p-3 px-8 rounded-4xl w-auto bg-black text-white">
-            <Link href="/login">Login</Link>
-          </button>
-          <button className="p-3 px-8 rounded-4xl w-auto bg-white text-black">
-            <Link href="/register">Register</Link>
-          </button>
+          <Dialog>
+            <DialogTrigger
+              render={
+                <button className="p-3 px-8 rounded-4xl w-auto bg-black text-white">
+                  Login
+                </button>
+              }
+            ></DialogTrigger>
+            <DialogPortal>
+              <DialogContent>
+                <AuthForm type="Login" />
+              </DialogContent>
+            </DialogPortal>
+          </Dialog>
+
+          <Dialog>
+            <DialogTrigger
+              render={
+                <button className="p-3 px-8 rounded-4xl w-auto bg-white text-black">
+                  Register
+                </button>
+              }
+            ></DialogTrigger>
+            <DialogContent>
+              <AuthForm type="Register" />
+            </DialogContent>
+          </Dialog>
         </div>
       </nav>
     </header>

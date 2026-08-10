@@ -54,16 +54,12 @@ export function AuthForm({ type }: AuthProps) {
     }
 
     if (success) {
-      redirect("/homepage");
     }
   };
 
   return (
-    <form
-      onSubmit={(e) => handleAuth(e, type)}
-      className="flex w-screen h-screen items-center justify-center"
-    >
-      <div className="flex flex-col items-center justify-center h-auto w-auto p-10 shadow-2xl rounded-4xl gap-10 transition-all duration-500 ease-in-out">
+    <form onSubmit={(e) => handleAuth(e, type)}>
+      <div className="flex flex-col items-center justify-center py-10 gap-10 transition-all duration-500 ease-in-out">
         <div>
           <h3 className="text-4xl font-roboto">
             Welcome{type == "Register" ? "" : " Back"}!
@@ -115,7 +111,7 @@ export function AuthForm({ type }: AuthProps) {
             )}
           </div>
 
-          {type == "Register" && (
+          {type === "Register" && (
             <input
               className="p-3 border-gray-200 border-2 w-80"
               type="password"
@@ -127,7 +123,7 @@ export function AuthForm({ type }: AuthProps) {
         </div>
         <div className="flex flex-col gap-2">
           <button className="p-3 w-80 border bg-black text-white">
-            Sign In
+            {type === "Register" ? "Register" : "Sign In"}
           </button>
           <button className="p-1 w-80 flex items-center justify-center gap-2 border-gray-200 border-2">
             <Image
