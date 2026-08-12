@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Dialog,
   DialogTrigger,
@@ -7,8 +9,29 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { AuthForm } from "./AuthForm";
+import { useState } from "react";
+import { VerificationCodeInput } from "./VerificationCodeInput";
 
 export function TopNavBar() {
+  const [registerOpen, setRegisterOpen] = useState<boolean>(false);
+  const [loginOpen, setLoginOpen] = useState<boolean>(false);
+  const [verificationOpen, setVerificationOpen] = useState<boolean>(false);
+
+  const handleOpen = (type: string) => {
+    if (type === "Register") {
+      setLoginOpen(true);
+      setRegisterOpen(false);
+    } else {
+      setLoginOpen(false);
+      setRegisterOpen(true);
+    }
+  };
+
+  const handleVerification = () => {
+    setVerificationOpen(true);
+    setRegisterOpen(false);
+  };
+
   return (
     <header className="sticky top-0 h-20 bg-green-200">
       <nav
@@ -34,7 +57,7 @@ export function TopNavBar() {
         </div>
 
         <div className="flex gap-6">
-          <Dialog>
+          <Dialog open={loginOpen} onOpenChange={setLoginOpen}>
             <DialogTrigger
               render={
                 <button className="p-3 px-8 rounded-4xl w-auto bg-black text-white">
@@ -44,12 +67,12 @@ export function TopNavBar() {
             ></DialogTrigger>
             <DialogPortal>
               <DialogContent>
-                <AuthForm type="Login" />
+                <AuthForm setOpen={handleOpen} type="Login" />
               </DialogContent>
             </DialogPortal>
           </Dialog>
 
-          <Dialog>
+          <Dialog open={registerOpen} onOpenChange={setRegisterOpen}>
             <DialogTrigger
               render={
                 <button className="p-3 px-8 rounded-4xl w-auto bg-white text-black">
@@ -58,7 +81,17 @@ export function TopNavBar() {
               }
             ></DialogTrigger>
             <DialogContent>
-              <AuthForm type="Register" />
+              <AuthForm
+                openVerification={handleVerification}
+                setOpen={handleOpen}
+                type="Register"
+              />
+            </DialogContent>
+          </Dialog>
+
+          <Dialog open={verificationOpen} onOpenChange={setVerificationOpen}>
+            <DialogContent>
+              <VerificationCodeInput />
             </DialogContent>
           </Dialog>
         </div>

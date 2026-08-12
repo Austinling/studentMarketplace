@@ -5,10 +5,12 @@ import { redirect } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 interface AuthProps {
+  setOpen: (type: string) => void;
   type: "Login" | "Register";
+  openVerification?: () => void;
 }
 
-export function AuthForm({ type }: AuthProps) {
+export function AuthForm({ setOpen, type, openVerification }: AuthProps) {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -53,7 +55,9 @@ export function AuthForm({ type }: AuthProps) {
       console.error("Error is ", error);
     }
 
-    if (success) {
+    if (success && authVariable === "register" && openVerification) {
+      console.log("This works.");
+      openVerification();
     }
   };
 
@@ -139,9 +143,13 @@ export function AuthForm({ type }: AuthProps) {
 
           <p className="text-blue-400 underline text-center">
             {type == "Register" ? (
-              <Link href="/login">Already have an account? Sign In Now</Link>
+              <button onClick={() => setOpen("Register")}>
+                Already have an account? Sign In Now
+              </button>
             ) : (
-              <Link href="/register">Don't have an account? Sign Up Now</Link>
+              <button onClick={() => setOpen("Login")}>
+                Don't have an account? Sign Up Now
+              </button>
             )}
           </p>
         </div>

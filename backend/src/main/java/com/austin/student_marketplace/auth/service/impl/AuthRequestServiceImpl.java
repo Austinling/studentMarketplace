@@ -63,7 +63,7 @@ public class AuthRequestServiceImpl implements AuthRequestService {
 
         User user = User.builder()
                 .email(registerRequest.email())
-                .password(registerRequest.password())
+                .password(passwordEncoder.encode(registerRequest.password()))
                 .profile(profile)
                 .username(registerRequest.username())
                 .role("STUDENT")
