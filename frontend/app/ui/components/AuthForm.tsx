@@ -3,6 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { FormEvent, useState } from "react";
+import styles from "../modules/home.module.css";
+import {
+  confirmPasswordValidation,
+  validateEmail,
+  validatePassword,
+  validateUsername,
+} from "@/app/lib/validators";
+import clsx from "clsx";
 
 interface AuthProps {
   setOpen: (type: string) => void;
@@ -10,28 +18,81 @@ interface AuthProps {
   openVerification?: () => void;
 }
 
+interface FormDetails {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface FormClicked {
+  username: boolean;
+  email: boolean;
+  password: boolean;
+  confirmPassword: boolean;
+}
+
 export function AuthForm({ setOpen, type, openVerification }: AuthProps) {
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [formDetails, setFormDetails] = useState<FormDetails>({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [hasClicked, setClicked] = useState<FormClicked>({
+    username: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+  });
+  const [isLoading, setLoading] = useState<boolean>(false);
+
+  const emailError = hasClicked.email && !validateEmail(formDetails.email);
+  const usernameError =
+    hasClicked.username && !validateUsername(formDetails.username);
+  const passwordError =
+    hasClicked.password && !validatePassword(formDetails.password);
+  const differentPasswordError =
+    hasClicked.confirmPassword &&
+    !confirmPasswordValidation(
+      formDetails.password,
+      formDetails.confirmPassword,
+    );
+
+  const handleFormValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormDetails((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleClicked = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setClicked((prev) => ({ ...prev, [e.target.name]: true }));
+  };
+
+  const handleRedOutline = (hasError: boolean) => {
+    return clsx(
+      "p-3 border-2 w-80 outline-none transition-colors text-sm rounded",
+      {
+        "border-red-600 focus:border-red-600": hasError,
+        "border-gray-200 focus:border-gray-200": !hasError,
+      },
+    );
+  };
 
   const handleAuth = async (e: FormEvent, authType: string) => {
-    e.preventDefault();
-
     const authVariable = authType.toLowerCase();
     const body =
       authVariable === "register"
         ? {
-            username: username,
-            email: email,
-            password: password,
+            username: formDetails.username,
+            email: formDetails.email,
+            password: formDetails.password,
           }
         : {
-            email: email,
-            password: password,
+            email: formDetails.email,
+            password: formDetails.password,
           };
 
     let success = false;
+    setLoading(true);
     try {
       const response = await fetch(
         `http://localhost:8082/api/auth/${authVariable}`,
@@ -71,63 +132,103 @@ export function AuthForm({ setOpen, type, openVerification }: AuthProps) {
         </div>
         <div className="flex flex-col gap-6">
           {type == "Register" && (
-            <input
-              className="p-3 border-gray-200 border-2 w-80"
-              type="username"
-              placeholder="Enter Your Username"
-              name="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            ></input>
+            <div className="flex flex-col items-center gap-1">
+              <input
+                className={handleRedOutline(usernameError)}
+                type="text"
+                placeholder="Enter Your Username"
+                name="username"
+                value={formDetails.username}
+                onChange={(e) => handleFormValue(e)}
+                onBlur={(e) => handleClicked(e)}
+                required
+              ></input>
+              {usernameError && (
+                <span className="text-sm text-red-700">
+                  Username must contain at least 5 characters
+                </span>
+              )}
+            </div>
           )}
-          <input
-            className="p-3 border-gray-200 border-2 w-80"
-            type="text"
-            placeholder="Email Address"
-            name="username"
-            value={email}
-            required
-            onChange={(e) => setEmail(e.target.value)}
-          ></input>
-
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col text-center items-center gap-1">
             <input
-              className="p-3 border-gray-200 border-2 w-80"
-              type="password"
-              placeholder="Password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              className={handleRedOutline(emailError)}
+              type="text"
+              placeholder="Email Address"
+              name="email"
+              value={formDetails.email}
               required
+              onChange={(e) => handleFormValue(e)}
+              onBlur={(e) => handleClicked(e)}
             ></input>
-            {type == "Login" && (
-              <div className="flex items-center justify-between">
-                <div className="flex gap-2">
-                  <input type="checkbox" />
-                  <p>Remember for 30 days</p>
-                </div>
-
-                <p className="text-blue-400 underline text-right">
-                  <Link href="/login">Forgot password?</Link>
-                </p>
-              </div>
+            {emailError && (
+              <span className="text-sm text-red-700">
+                You must enter a valid .ac.uk email
+              </span>
             )}
           </div>
 
-          {type === "Register" && (
+          <div className="flex flex-col text-center items-center gap-1">
             <input
-              className="p-3 border-gray-200 border-2 w-80"
+              className={handleRedOutline(passwordError)}
               type="password"
-              placeholder="Confirm Password"
-              name="confirmPassword"
+              placeholder="Password"
+              name="password"
+              value={formDetails.password}
+              onChange={(e) => handleFormValue(e)}
+              onBlur={(e) => handleClicked(e)}
               required
             ></input>
+            {passwordError && (
+              <span className="text-sm text-red-700">
+                Passwords must contain at least one uppercase letter, one
+                number, one symbol, and at least 8 characters.
+              </span>
+            )}
+          </div>
+
+          {type == "Login" && (
+            <div className="flex items-center justify-between">
+              <div className="flex gap-2">
+                <input type="checkbox" />
+                <p>Remember for 30 days</p>
+              </div>
+
+              <p className="text-blue-400 underline text-right">
+                <Link href="/login">Forgot password?</Link>
+              </p>
+            </div>
+          )}
+
+          {type === "Register" && (
+            <div className="flex flex-col text-center items-center gap-1">
+              <input
+                className={handleRedOutline(differentPasswordError)}
+                type="password"
+                placeholder="Confirm Password"
+                name="confirmPassword"
+                value={formDetails.confirmPassword}
+                required
+                onChange={(e) => handleFormValue(e)}
+                onBlur={(e) => handleClicked(e)}
+              ></input>
+              {differentPasswordError && (
+                <span className="text-sm text-red-700">
+                  {"Passwords don't match"}
+                </span>
+              )}
+            </div>
           )}
         </div>
         <div className="flex flex-col gap-2">
-          <button className="p-3 w-80 border bg-black text-white">
-            {type === "Register" ? "Register" : "Sign In"}
+          <button className="p-3 h-14 w-80 flex items-center justify-center border bg-black text-white">
+            {isLoading ? (
+              <div className={styles.loader}></div>
+            ) : type === "Register" ? (
+              "Register"
+            ) : (
+              "Sign In"
+            )}
           </button>
           <button className="p-1 w-80 flex items-center justify-center gap-2 border-gray-200 border-2">
             <Image
@@ -144,11 +245,11 @@ export function AuthForm({ setOpen, type, openVerification }: AuthProps) {
           <p className="text-blue-400 underline text-center">
             {type == "Register" ? (
               <button onClick={() => setOpen("Register")}>
-                Already have an account? Sign In Now
+                {"Already have an account? Sign In Now"}
               </button>
             ) : (
               <button onClick={() => setOpen("Login")}>
-                Don't have an account? Sign Up Now
+                {"Don't have an account? Sign Up Now"}
               </button>
             )}
           </p>
