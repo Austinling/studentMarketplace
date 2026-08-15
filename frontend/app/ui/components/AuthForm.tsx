@@ -11,18 +11,16 @@ import {
   validateUsername,
 } from "@/app/lib/validators";
 import clsx from "clsx";
+import { ShieldAlert } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { FormDetails } from "./TopNavBar";
 
 interface AuthProps {
+  formDetails: FormDetails;
+  setFormDetails: (formDetails: FormDetails) => void;
   setOpen: (type: string) => void;
   type: "Login" | "Register";
   openVerification?: () => void;
-}
-
-interface FormDetails {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
 }
 
 interface FormClicked {
@@ -32,19 +30,28 @@ interface FormClicked {
   confirmPassword: boolean;
 }
 
-export function AuthForm({ setOpen, type, openVerification }: AuthProps) {
-  const [formDetails, setFormDetails] = useState<FormDetails>({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+const errorMessages: Record<string, string> = {
+  usernameError: "Username must contain at least 5 characters",
+  emailError: "You must enter a valid .ac.uk email",
+  passwordError:
+    "Passwords must contain at least one uppercase letter, one number, one symbol, and at least 8 characters.",
+  differentPasswordError: "Passwords don't match",
+};
+
+export function AuthForm({
+  formDetails,
+  setFormDetails,
+  setOpen,
+  type,
+  openVerification,
+}: AuthProps) {
   const [hasClicked, setClicked] = useState<FormClicked>({
     username: false,
     email: false,
     password: false,
     confirmPassword: false,
   });
+  const [showFormError, setShowFormError] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
 
   const emailError = hasClicked.email && !validateEmail(formDetails.email);
@@ -59,8 +66,14 @@ export function AuthForm({ setOpen, type, openVerification }: AuthProps) {
       formDetails.confirmPassword,
     );
 
+  const finalError =
+    emailError || usernameError || passwordError || differentPasswordError;
+
   const handleFormValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setFormDetails((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormDetails({
+      ...formDetails,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleClicked = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -77,7 +90,19 @@ export function AuthForm({ setOpen, type, openVerification }: AuthProps) {
     );
   };
 
+  const handleSubmissionError = async () => {
+    setShowFormError(true);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setShowFormError(false);
+  };
+
   const handleAuth = async (e: FormEvent, authType: string) => {
+    e.preventDefault();
+    if (finalError) {
+      handleSubmissionError();
+      return;
+    }
+
     const authVariable = authType.toLowerCase();
     const body =
       authVariable === "register"
@@ -123,7 +148,24 @@ export function AuthForm({ setOpen, type, openVerification }: AuthProps) {
   };
 
   return (
-    <form onSubmit={(e) => handleAuth(e, type)}>
+    <form className="relative" onSubmit={(e) => handleAuth(e, type)} noValidate>
+      {showFormError && (
+        <AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ ease: "easeInOut", duration: 0.3 }}
+            className="absolute flex items-center justify-center gap-5 top-0 bg-red-600 p-5"
+          >
+            <ShieldAlert className="text-white" />
+            <span className="text-white  text-md">
+              Please fix the errors before submitting
+            </span>
+          </motion.div>
+        </AnimatePresence>
+      )}
+
       <div className="flex flex-col items-center justify-center py-10 gap-10 transition-all duration-500 ease-in-out">
         <div>
           <h3 className="text-4xl font-roboto">
@@ -145,7 +187,7 @@ export function AuthForm({ setOpen, type, openVerification }: AuthProps) {
               ></input>
               {usernameError && (
                 <span className="text-sm text-red-700">
-                  Username must contain at least 5 characters
+                  {errorMessages.usernameError}
                 </span>
               )}
             </div>
@@ -163,7 +205,7 @@ export function AuthForm({ setOpen, type, openVerification }: AuthProps) {
             ></input>
             {emailError && (
               <span className="text-sm text-red-700">
-                You must enter a valid .ac.uk email
+                {errorMessages.emailError}
               </span>
             )}
           </div>
@@ -181,8 +223,7 @@ export function AuthForm({ setOpen, type, openVerification }: AuthProps) {
             ></input>
             {passwordError && (
               <span className="text-sm text-red-700">
-                Passwords must contain at least one uppercase letter, one
-                number, one symbol, and at least 8 characters.
+                {errorMessages.passwordError}
               </span>
             )}
           </div>
@@ -214,14 +255,17 @@ export function AuthForm({ setOpen, type, openVerification }: AuthProps) {
               ></input>
               {differentPasswordError && (
                 <span className="text-sm text-red-700">
-                  {"Passwords don't match"}
+                  {errorMessages.differentPasswordError}
                 </span>
               )}
             </div>
           )}
         </div>
         <div className="flex flex-col gap-2">
-          <button className="p-3 h-14 w-80 flex items-center justify-center border bg-black text-white">
+          <button
+            disabled={isLoading || finalError}
+            className="p-3 h-14 w-80 flex items-center justify-center border bg-black text-white"
+          >
             {isLoading ? (
               <div className={styles.loader}></div>
             ) : type === "Register" ? (

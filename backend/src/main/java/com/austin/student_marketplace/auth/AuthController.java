@@ -3,6 +3,7 @@ package com.austin.student_marketplace.auth;
 import com.austin.student_marketplace.auth.dto.LoginRequestDto;
 import com.austin.student_marketplace.auth.dto.RegisterRequestDto;
 import com.austin.student_marketplace.auth.dto.UserDto;
+import com.austin.student_marketplace.auth.dto.VerifyRequestDto;
 import com.austin.student_marketplace.auth.mapper.impl.AuthRequestMapperImpl;
 import com.austin.student_marketplace.auth.service.JwtService;
 import com.austin.student_marketplace.auth.service.impl.AuthRequestServiceImpl;
@@ -34,7 +35,6 @@ public class AuthController {
         String jwtToken = jwtService.generateToken(new UserPrincipal(user));
         LoginResponse loginResponse = new LoginResponse(jwtToken, jwtService.getExpirationTime());
 
-
         return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 
@@ -48,5 +48,35 @@ public class AuthController {
         UserDto userDto = authRequestMapperImpl.toDto(user);
 
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<String> verify(
+            @Valid
+            @RequestBody VerifyRequestDto verifyRequestDto
+    ){
+        try{
+            authRequestServiceImpl.verifyUser(verifyRequestDto);
+            return ResponseEntity.ok("Account verified successfully");
+
+        }catch(RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+
+    }
+
+    @PostMapping("/resend")
+    public ResponseEntity<String> resendCode(
+            @Valid
+            @RequestParam String email
+    ){
+        try{
+            authRequestServiceImpl.resendVerificationEmail(email);
+            return ResponseEntity.ok("Account verified successfully");
+
+        }catch(RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

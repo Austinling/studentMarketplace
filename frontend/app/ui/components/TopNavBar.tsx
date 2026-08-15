@@ -11,17 +11,46 @@ import Link from "next/link";
 import { AuthForm } from "./AuthForm";
 import { useState } from "react";
 import { VerificationCodeInput } from "./VerificationCodeInput";
+import { VerificationSuccess } from "./VerificationSuccess";
+
+export interface FormDetails {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
 export function TopNavBar() {
   const [registerOpen, setRegisterOpen] = useState<boolean>(false);
   const [loginOpen, setLoginOpen] = useState<boolean>(false);
   const [verificationOpen, setVerificationOpen] = useState<boolean>(false);
+  const [verificationSuccessOpen, setVerificationSuccessOpen] =
+    useState<boolean>(false);
+
+  const [formDetails, setFormDetails] = useState<FormDetails>({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
   const handleOpen = (type: string) => {
     if (type === "Register") {
+      setFormDetails({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
       setLoginOpen(true);
       setRegisterOpen(false);
     } else {
+      setFormDetails({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
       setLoginOpen(false);
       setRegisterOpen(true);
     }
@@ -30,6 +59,11 @@ export function TopNavBar() {
   const handleVerification = () => {
     setVerificationOpen(true);
     setRegisterOpen(false);
+  };
+
+  const handleVerificationSuccess = () => {
+    setVerificationOpen(false);
+    setVerificationSuccessOpen(true);
   };
 
   return (
@@ -60,14 +94,22 @@ export function TopNavBar() {
           <Dialog open={loginOpen} onOpenChange={setLoginOpen}>
             <DialogTrigger
               render={
-                <button className="p-3 px-8 rounded-4xl w-auto bg-black text-white">
+                <button
+                  onClick={() => handleOpen("Register")}
+                  className="p-3 px-8 rounded-4xl w-auto bg-black text-white"
+                >
                   Login
                 </button>
               }
             ></DialogTrigger>
             <DialogPortal>
               <DialogContent>
-                <AuthForm setOpen={handleOpen} type="Login" />
+                <AuthForm
+                  formDetails={formDetails}
+                  setFormDetails={setFormDetails}
+                  setOpen={handleOpen}
+                  type="Login"
+                />
               </DialogContent>
             </DialogPortal>
           </Dialog>
@@ -75,13 +117,18 @@ export function TopNavBar() {
           <Dialog open={registerOpen} onOpenChange={setRegisterOpen}>
             <DialogTrigger
               render={
-                <button className="p-3 px-8 rounded-4xl w-auto bg-white text-black">
+                <button
+                  onClick={() => handleOpen("Login")}
+                  className="p-3 px-8 rounded-4xl w-auto bg-white text-black"
+                >
                   Register
                 </button>
               }
             ></DialogTrigger>
             <DialogContent>
               <AuthForm
+                formDetails={formDetails}
+                setFormDetails={setFormDetails}
                 openVerification={handleVerification}
                 setOpen={handleOpen}
                 type="Register"
@@ -91,7 +138,19 @@ export function TopNavBar() {
 
           <Dialog open={verificationOpen} onOpenChange={setVerificationOpen}>
             <DialogContent>
-              <VerificationCodeInput />
+              <VerificationCodeInput
+                handleSuccess={handleVerificationSuccess}
+                email={formDetails.email}
+              />
+            </DialogContent>
+          </Dialog>
+
+          <Dialog
+            open={verificationSuccessOpen}
+            onOpenChange={setVerificationSuccessOpen}
+          >
+            <DialogContent>
+              <VerificationSuccess />
             </DialogContent>
           </Dialog>
         </div>
