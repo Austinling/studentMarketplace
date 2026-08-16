@@ -12,6 +12,7 @@ import { AuthForm } from "./AuthForm";
 import { useState } from "react";
 import { VerificationCodeInput } from "./VerificationCodeInput";
 import { VerificationSuccess } from "./VerificationSuccess";
+import { MainSearch } from "./MainSearch";
 
 export interface FormDetails {
   username: string;
@@ -67,30 +68,30 @@ export function TopNavBar() {
   };
 
   return (
-    <header className="sticky top-0 h-20 bg-green-200">
+    <header className="sticky top-0 h-20 bg-white shadow-md">
       <nav
         aria-label={"Top NavBar"}
-        className="flex items-center justify-between h-full px-4"
+        className="flex items-center justify-between h-full px-4 gap-5"
       >
-        <div className="flex items-center gap-3">
+        <div className="flex flex-1 items-center gap-3">
           <Image
             className="object-contain"
-            src="/alien.svg"
-            alt="Alien Logo"
+            src="/logo.png"
+            alt="UniMarket Logo"
             width={48}
             height={48}
             priority
           />
           <Link href="/homepage" className="font-roboto font-bold text-2xl">
-            Supaplace
+            UniMarket
           </Link>
         </div>
 
-        <div>
-          <ul></ul>
+        <div className="flex flex-auto">
+          <MainSearch />
         </div>
 
-        <div className="flex gap-6">
+        <div className="flex flex-1 justify-end gap-6">
           <Dialog open={loginOpen} onOpenChange={setLoginOpen}>
             <DialogTrigger
               render={
