@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { FormEvent, useState } from "react";
-import styles from "../modules/home.module.css";
+import styles from "../../modules/home.module.css";
 import {
   confirmPasswordValidation,
   validateEmail,
@@ -37,6 +37,8 @@ const errorMessages: Record<string, string> = {
     "Passwords must contain at least one uppercase letter, one number, one symbol, and at least 8 characters.",
   differentPasswordError: "Passwords don't match",
 };
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export function AuthForm({
   formDetails,
@@ -119,16 +121,13 @@ export function AuthForm({
     let success = false;
     setLoading(true);
     try {
-      const response = await fetch(
-        `http://localhost:8082/api/auth/${authVariable}`,
-        {
-          method: "POST",
-          body: JSON.stringify(body),
-          headers: {
-            "Content-Type": "application/json",
-          },
+      const response = await fetch(`${API_URL}/auth/${authVariable}`, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+      });
 
       if (response.ok) {
         const data = await response.json();

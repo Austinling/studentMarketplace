@@ -23,6 +23,8 @@ interface VerificationProps {
   handleSuccess: () => void;
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export function VerificationCodeInput({
   email,
   handleSuccess,
@@ -33,7 +35,7 @@ export function VerificationCodeInput({
       email: email,
       code: code,
     };
-    const response = await fetch(`http://localhost:8082/api/auth/verify`, {
+    const response = await fetch(`${API_URL}/auth/verify`, {
       method: "POST",
       body: JSON.stringify(body),
       headers: {
@@ -53,7 +55,7 @@ export function VerificationCodeInput({
         <Image
           className="object-contain"
           src="/logo.png"
-          alt="Alien Logo"
+          alt="UniMarket Logo"
           width={48}
           height={48}
           priority
@@ -76,7 +78,7 @@ export function VerificationCodeInput({
             <InputOTP
               value={code}
               onChange={(otp) => setCode(otp)}
-              onComplete={(otp: string) => handleVerificationSubmission()}
+              onComplete={() => handleVerificationSubmission()}
               maxLength={6}
               id="otp-verification"
               required
