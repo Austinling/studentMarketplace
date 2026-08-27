@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/api/listing")
+@RequestMapping(path = "/api/listings")
 @CrossOrigin(origins = "http://localhost:3000")
 public class ListingController {
 

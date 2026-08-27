@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.time.Instant;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -27,6 +26,9 @@ public class Listing extends TimestampDetails {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "sellerId",nullable = false)
+    private UUID sellerId;
 
     @Column(name = "slug",  nullable = false, unique = true)
     private String slug;

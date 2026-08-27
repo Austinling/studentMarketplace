@@ -33,6 +33,20 @@ public class Profile extends TimestampDetails {
     @Column(name = "rating", nullable = false)
     private Double rating;
 
+    @Column(name = "major")
+    private String major;
+
+    @Column(name = "universityId")
+    private String universityId;
+
+    @Column(name = "gradYear")
+    private Integer gradYear;
+
+    @Column(name = "housingType")
+    private String housingType;
+
+
+
     @OneToOne(mappedBy = "profile")
     private User user;
 

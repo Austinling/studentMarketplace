@@ -19,37 +19,13 @@ import { Button } from "@base-ui/react";
 import { Badge } from "lucide-react";
 import Image from "next/image";
 import { useListing } from "../hooks/useListing";
-import { CarouselShell } from "./CarouselShell";
 
-interface CarouselItems {
-  data: CarouselItem[];
-}
-
-interface CarouselItem {
-  image: string;
-  body: string;
-  title: string;
-  category?: string;
-}
-
-interface Listing {
-  name: string;
-  description: string;
-  price: number;
-  quantity: number;
-  status: string;
-  categories?: string[];
-}
-
-export function CarouselAuto() {
-  const { data: listings, isError, isPending } = useListing();
+export function CarouselShell() {
+  const { data: listings, error, isPending } = useListing();
 
   console.log("Listings", useListing());
+  console.log("Error", error);
   console.log("Data", listings);
-
-  if (isPending || isError) {
-    return <CarouselShell />;
-  }
 
   return (
     <Carousel
@@ -58,11 +34,11 @@ export function CarouselAuto() {
       }}
     >
       <CarouselContent>
-        {listings.map((listing: Listing) => {
+        {Array.from({ length: 6 }).map((_, i) => {
           return (
             <CarouselItem
               className="basis-full md:basis-1/2 lg:basis-1/4"
-              key={`${listing.name}`}
+              key={`${i}`}
             >
               <Card className="relative mx-auto w-full max-w-sm pt-0">
                 <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
@@ -77,8 +53,8 @@ export function CarouselAuto() {
                   <CardAction>
                     <Badge>Featured</Badge>
                   </CardAction>
-                  <CardTitle>{listing.name}</CardTitle>
-                  <CardDescription>{listing.description}</CardDescription>
+                  <CardTitle>Loading...</CardTitle>
+                  <CardDescription>Loading...</CardDescription>
                 </CardHeader>
                 <CardFooter>
                   <Button className="w-full">View</Button>
