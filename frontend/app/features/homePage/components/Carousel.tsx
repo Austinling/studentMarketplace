@@ -19,13 +19,37 @@ import { Button } from "@base-ui/react";
 import { Badge } from "lucide-react";
 import Image from "next/image";
 import { useListing } from "../hooks/useListing";
+import { CarouselShell } from "./CarouselShell";
 
-export function CarouselShell() {
-  const { data: listings, error, isPending } = useListing();
+interface CarouselItems {
+  data: CarouselItem[];
+}
+
+interface CarouselItem {
+  image: string;
+  body: string;
+  title: string;
+  category?: string;
+}
+
+interface Listing {
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
+  status: string;
+  categories?: string[];
+}
+
+export function CarouselAuto() {
+  const { data: listings, isError, isPending } = useListing();
 
   console.log("Listings", useListing());
-  console.log("Error", error);
   console.log("Data", listings);
+
+  if (isPending || isError) {
+    return <CarouselShell />;
+  }
 
   return (
     <Carousel
@@ -34,15 +58,16 @@ export function CarouselShell() {
       }}
     >
       <CarouselContent>
-        {Array.from({ length: 6 }).map((_, i) => {
+        {listings.map((listing: Listing) => {
           return (
             <CarouselItem
               className="basis-full md:basis-1/2 lg:basis-1/4"
-              key={`${i}`}
+              key={`${listing.name}`}
             >
               <Card className="relative mx-auto w-full max-w-sm pt-0">
                 <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
                 <Image
+                  loading="lazy"
                   src={`/logo.png`}
                   alt="Event cover"
                   className="relative z-20 aspect-video w-full object-cover brightness-60 grayscale dark:brightness-40"
@@ -53,8 +78,8 @@ export function CarouselShell() {
                   <CardAction>
                     <Badge>Featured</Badge>
                   </CardAction>
-                  <CardTitle>Loading...</CardTitle>
-                  <CardDescription>Loading...</CardDescription>
+                  <CardTitle>{listing.name}</CardTitle>
+                  <CardDescription>{listing.description}</CardDescription>
                 </CardHeader>
                 <CardFooter>
                   <Button className="w-full">View</Button>

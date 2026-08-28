@@ -275,12 +275,12 @@ export function AuthForm({
           </button>
           <button className="p-1 w-80 flex items-center justify-center gap-2 border-gray-200 border-2">
             <Image
+              loading="lazy"
               className=""
               src="/google.svg"
               alt="Google Logo"
               width={40}
               height={40}
-              priority
             />
             Sign In With Google
           </button>

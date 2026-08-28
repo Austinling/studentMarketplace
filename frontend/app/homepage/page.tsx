@@ -1,6 +1,7 @@
 import { MainSection } from "../features/auth/components/MainSection";
 import { TopNavBar } from "../features/auth/components/TopNavBar";
-import { MainPageCatalog } from "../features/listings/components/MainPageCatalog";
+import { InstructionsContainer } from "../features/homePage/components/InstructionsContainer";
+import { MainPageCatalog } from "../features/homePage/components/MainPageCatalog";
 
 export default function HomePage() {
   return (
@@ -8,6 +9,7 @@ export default function HomePage() {
       <TopNavBar />
       <MainSection />
       <MainPageCatalog />
+      <InstructionsContainer />
     </main>
   );
 }

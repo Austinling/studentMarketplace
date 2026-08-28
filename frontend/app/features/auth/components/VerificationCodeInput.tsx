@@ -53,12 +53,12 @@ export function VerificationCodeInput({
     <div className="mx-auto max-w-md w-full flex flex-col gap-6 p-2">
       <div className=" flex flex-col border-none items-center justify-center">
         <Image
+          loading="lazy"
           className="object-contain"
           src="/logo.png"
           alt="UniMarket Logo"
           width={48}
           height={48}
-          priority
         />
         <div>Please Enter Your One Time Code</div>
         <div className="text-center text-gray-400 flex flex-col">

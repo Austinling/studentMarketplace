@@ -75,12 +75,12 @@ export function TopNavBar() {
       >
         <div className="flex flex-1 items-center gap-3">
           <Image
+            loading="lazy"
             className="object-contain"
             src="/logo.png"
             alt="UniMarket Logo"
             width={48}
             height={48}
-            priority
           />
           <Link href="/homepage" className="font-roboto font-bold text-2xl">
             UniMarket
