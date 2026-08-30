@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Roboto_Mono, Inter } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Roboto_Mono,
+  Inter,
+  PT_Serif_Caption,
+} from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import {
@@ -8,6 +14,14 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { QueryClientWrapper } from "./QueryClientWrapper";
+import { TopNavBar } from "./features/auth/components/TopNavBar";
+
+const pt_serif_caption = PT_Serif_Caption({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+  variable: "--pt-serif-caption",
+});
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -49,10 +63,14 @@ export default function RootLayout({
         geistMono.variable,
         "font-sans",
         geist.variable,
+        pt_serif_caption.variable,
       )}
     >
       <body className="min-h-full flex flex-col">
-        <QueryClientWrapper>{children}</QueryClientWrapper>
+        <QueryClientWrapper>
+          <TopNavBar />
+          {children}
+        </QueryClientWrapper>
       </body>
     </html>
   );

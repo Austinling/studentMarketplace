@@ -5,11 +5,10 @@ import { MainPageCatalog } from "../features/homePage/components/MainPageCatalog
 
 export default function HomePage() {
   return (
-    <main className="flex flex-col h-full">
-      <TopNavBar />
+    <div>
       <MainSection />
       <MainPageCatalog />
       <InstructionsContainer />
-    </main>
+    </div>
   );
 }
